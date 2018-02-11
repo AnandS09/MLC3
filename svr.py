@@ -10,9 +10,19 @@ def fit_and_test():
 
     train_x, val_x, train_y, val_y = t(data, target, test_size=0.1)
 
-    m = SVR()
+    m = SVR(C=100)
     m.fit(train_x, train_y)
+    pred_y = m.predict(val_x)
 
+    outfile = open("valpreds.csv",'w')
+    outfile.write("Actual, Predicted, Delta,\n")
+
+    for i in range(len(val_y)):
+        delta = val_y[i] - pred_y[i]
+        entry = str(val_y[i]) +", "+str(pred_y[i]) +", "+str(delta) +",\n"
+        outfile.write(entry)
+
+    outfile.close()
     print("Score on validation")
     print(m.score(val_x, val_y))
 
@@ -35,9 +45,10 @@ def get_predictions():
         entry = id[i] +"," +str(predictions[i]) + "\n"
         outfile.write(entry)
 
+    outfile.close()
     print("Submission file written")
 
 
 if __name__ == "__main__":
-    #fit_and_test()
-    get_predictions()
+    fit_and_test()
+    #get_predictions()

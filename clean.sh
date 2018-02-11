@@ -1,2 +1,2 @@
-rm -rf submissions.csv
+rm -rf *.csv
 
